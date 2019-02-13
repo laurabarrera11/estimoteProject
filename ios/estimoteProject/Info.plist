@@ -52,6 +52,11 @@
 			<key>localhost</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+        <key>NSLocationWhenInUseUsageDescription</key>
+        <string>We'll show you things near you in the app.</string>
+        <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+        <string>We'll show you things near you in the app. With "always" access, we'll
+          also send you notifications when you're near something interesting.</string>
 				<true/>
 			</dict>
 		</dict>

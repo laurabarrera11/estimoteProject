@@ -1,6 +1,8 @@
-import {AppRegistry, Alert} from 'react-native';
+import {AppRegistry, Alert, Vibration} from 'react-native';
+const PATTERN = [1000, 1000, 1000];
 
 export function displayAlert(tag){
+  Vibration.vibrate(PATTERN);
   var toolName;
   if(tag==='laser_cutter') toolName="Laser Cutter"
   if(tag==='3d_printer') toolName="3D Printer"
@@ -11,10 +13,10 @@ export function displayAlert(tag){
   text,
   'Would you like to learn more?',
   [
-    {text: 'Yes', onPress: () => console.log('Yes pressed')},
+    {text: 'Yes', onPress: () => Vibration.cancel()},
     {
       text: 'No',
-      onPress: () => console.log('No Pressed'),
+      onPress: () => Vibration.cancel(),
       style: 'cancel',
     }
   ],

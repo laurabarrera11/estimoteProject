@@ -3,7 +3,7 @@
  * @lint-ignore-every XPLATJSCOPYRIGHT1
  */
 
-import {AppRegistry} from 'react-native';
+import {AppRegistry, Alert} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
 import * as RNEP from '@estimote/react-native-proximity'
@@ -11,20 +11,26 @@ import * as RNEP from '@estimote/react-native-proximity'
 AppRegistry.registerComponent(appName, () => App);
 
 
-// generate Estimote Cloud credentials for your app at:
-// https://cloud.estimote.com/#/apps/add/your-own-app
 const ESTIMOTE_APP_ID = "estimoteproject-6ls";
 const ESTIMOTE_APP_TOKEN = "96589f0e43ea00fa43c3ccd98c926b6c";
 
-// will trigger when the user is within ~ 5 m of any beacon with tag "lobby"
-// you can add tags to your beacons on https://cloud.estimote.com, in Beacon Settingsc
-const zone1 = new RNEP.ProximityZone(5, "lobby");
+const zone1 = new RNEP.ProximityZone(1, "3d_printer");
 zone1.onEnterAction = context => {
-  // context properties are:
-  // - attachments: all the key-value attachments assigned in Estimote Cloud to the beacon that triggered the action
-  // - tag: the tag used when defining the zone, repeated here for convenience
-  // - deviceIdentifier: Estimote-specific device identifier of the beacon that triggered the action
+
   console.log("zone1 onEnter", context);
+    Alert.alert(
+    'This is the 3D Printer',
+    'Would you like to learn more?',
+    [
+      {text: 'Yes', onPress: () => console.log('Yes pressed')},
+      {
+        text: 'No',
+        onPress: () => console.log('No Pressed'),
+        style: 'cancel',
+      }
+    ],
+    {cancelable: true},
+  );
 };
 zone1.onExitAction = context => {
   console.log("zone1 onExit", context);
@@ -50,9 +56,22 @@ zone1.onChangeAction = contexts => {
   console.log("zone1 onChange", contexts);
 };
 
-const zone2 = new RNEP.ProximityZone(5, "conf-room");
+const zone2 = new RNEP.ProximityZone(1, "laser_cutter");
 zone2.onEnterAction = context => {
   console.log("zone2 onEnter", context);
+    Alert.alert(
+    'This is the Laser Cutter',
+    'Would you like to learn more?',
+    [
+      {text: 'Yes', onPress: () => console.log('Yes pressed')},
+      {
+        text: 'No',
+        onPress: () => console.log('No Pressed'),
+        style: 'cancel',
+      }
+    ],
+    {cancelable: true},
+  );
 };
 zone2.onExitAction = context => {
   console.log("zone2 onExit", context);
@@ -61,21 +80,31 @@ zone2.onChangeAction = contexts => {
   console.log("zone2 onChange", contexts);
 };
 
-// detecting proximity to Bluetooth beacons gives you information about the user's location, and so
-// on both iOS and Android it's required to ask the user for permission to do that
-//
-// - on iOS, the user can choose between "never", "only when using the app" and "always" (background)
-//   - however, background support also requires that you enable the "Uses Bluetooth LE accessories"
-//     Background Mode for your app
-//   - you can do that in Xcode project settings, on the Capabilities tab
-//   - you might also need to explain/defend your app's background usage during the App Store review
-//
-// - on Android, it'll be a simple "yes/no" popup, which is equivalent to "never" and "always"
-//   - however, to have it work in the background, you're also required to show a notification, so
-//     that the user knows that the app keeps running/detecting beacons even if they close it
-//   - see the `config` section below for how to enable/configure such notification
-//
-// see also: "Location permission" and "Background support" sections in the README
+const zone3 = new RNEP.ProximityZone(1, "drawing_table");
+zone3.onEnterAction = context => {
+  console.log("zone3 onEnter", context);
+    Alert.alert(
+    'This is the Drawing Table',
+    'Would you like to learn more?',
+    [
+      {text: 'Yes', onPress: () => console.log('Yes pressed')},
+      {
+        text: 'No',
+        onPress: () => console.log('No Pressed'),
+        style: 'cancel',
+      }
+    ],
+    {cancelable: true},
+  );
+};
+zone3.onExitAction = context => {
+  console.log("zone3 onExit", context);
+};
+zone3.onChangeAction = contexts => {
+  console.log("zone3 onChange", contexts);
+};
+
+
 RNEP.locationPermission.request().then(
   permission => {
     // `permission` will be one of RNEP.locationPermission.DENIED, .ALWAYS, or .WHEN_IN_USE
@@ -88,17 +117,10 @@ RNEP.locationPermission.request().then(
       );
 
       const config = {
-        // modern versions of Android require a notification informing the user that the app is active in the background
-        // if you don't need proximity observation to work in the background, you can omit the entire `notification` config
-        //
-        // see also: "Background support" section in the README
+
         notification: {
           title: "Exploration mode is on",
           text: "We'll notify you when you're next to something interesting.",
-          //icon: 'my_drawable', // if omitted, will default to the app icon (i.e., mipmap/ic_launcher)
-
-          // in apps targeting Android API 26, notifications must specify a channel
-          // https://developer.android.com/guide/topics/ui/notifiers/notifications#ManageChannels
           channel: {
             id: "exploration-mode",
             name: "Exploration Mode"
@@ -107,7 +129,8 @@ RNEP.locationPermission.request().then(
       };
 
       RNEP.proximityObserver.initialize(credentials, config);
-      RNEP.proximityObserver.startObservingZones([zone1, zone2]);
+    //  RNEP.proximityObserver.startObservingZones([zone1, zone2]);
+    RNEP.proximityObserver.startObservingZones([zone1, zone2, zone3]);
     }
   },
   error => {

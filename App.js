@@ -11,12 +11,12 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 
 type Props = {};
-export default class App extends Component<Props> {  
+export default class App extends Component<Props> {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to the Teen Lab!</Text>
-        <Text style={styles.instructions}>To get started, walk towards an Estimote</Text>
+      <View accessible={true} style={styles.container}>
+        <Text style={styles.welcome}>You are at the Teen Lab!</Text>
+        <Text style={styles.instructions}>To use a tool, walk towards an Estimote</Text>
       </View>
     );
   }
@@ -27,16 +27,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'black',
   },
   welcome: {
-    fontSize: 20,
+    fontSize: 45,
     textAlign: 'center',
     margin: 10,
+    color: 'yellow'
   },
   instructions: {
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
+    fontSize: 25,
+    color: 'yellow'
   },
 });
